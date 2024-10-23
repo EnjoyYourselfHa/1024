@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑神话·黑熊精</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .status-container { display: flex; align-items: center; margin: 20px 0; }
+        .status { display: flex; flex-direction: column; align-items: center; margin-right: 4em; }
+        .character { font-size: 24px; }
+        .stats { margin-top: 10px; }
+        .actions { margin-top: 20px; }
+        .log { margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>黑神话·黑熊精</h1>
+    <div class="status-container">
+        <div class="status">
+            <div class="character">(￣(エ)￣)</div>
+            <div class="character">黑熊精</div>
+            <div class="stats">
+                <p>血量: <span id="XX">10</span> 法术: <span id="XD">0</span></p>
+            </div>
+        </div>
+        <div class="status">
+            <div class="character">@(o･ｪ･o)@</div>
+            <div class="character">天命人</div>
+            <div class="stats">
+                <p>血量: <span id="HX">10</span> 法术: <span id="HD">0</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <button onclick="action(1)">力量</button>
+        <button onclick="action(2)">速度</button>
+        <button onclick="action(3)">技巧</button>
+        <button onclick="action(4)" id="kesha" disabled>宝贝袈裟</button>
+        <button onclick="action(5)" id="yehuo" disabled>业火焚身</button>
+    </div>
+    <div class="log" id="log"></div>
+
+    <script>
+        let XX = 10, XD = 0;
+        let HX = 10, HD = 0;
+        let log = [];
+
+        function updateStatus() {
+            document.getElementById('XX').textContent = XX;
+            document.getElementById('XD').textContent = XD;
+            document.getElementById('HX').textContent = HX;
+            document.getElementById('HD').textContent = HD;
+            document.getElementById('kesha').disabled = XD < 1;
+            document.getElementById('yehuo').disabled = XD < 2;
+        }
+
+        function action(XA) {
+            let HA = Math.floor(Math.random() * (3 + HD)) + 1;
+            if (HA > 3) HD += 3 - HA;
+
+            let XDM = 0, HDM = 0;
+            if (HA !== 4 && XA !== 4) {
+                if (XA === 5) {
+                    HX = Math.max(0, HX - 2);
+                    HDM = 2;
+                    XD -= 2;
+                }
+                if (HA === 5) {
+                    XX = Math.max(0, XX - 2);
+                    XDM = 2;
+                }
+                if (HA === 6) {
+                    XX = 0;
+                    XDM = 10;
+                }
+                if (HA <= 3 && XA <= 3) {
+                    switch (HA - XA) {
+                        case -2:
+                        case 1:
+                            XX = Math.max(0, XX - 1);
+                            HD = Math.min(3, HD + 1);
+                            XDM = 1;
+                            break;
+                        case -1:
+                        case 2:
+                            HX = Math.max(0, HX - 1);
+                            XD = Math.min(2, XD + 1);
+                            HDM = 1;
+                            break;
+                    }
+                }
+            }
+
+            log.push(`黑熊精: ${["力量", "速度", "技巧", "宝贝袈裟", "业火焚身"][XA-1]}, 天命人: ${["力量", "速度", "技巧", "聚形散气", "身外化身", "齐天大圣"][HA-1]} ` +
+                (XDM ? `黑熊精血量减${XDM}` : '') +
+                (HDM ? ` 天命人血量减${HDM}` : '')
+            );
+
+            document.getElementById('log').innerHTML = log.slice(-10).join("<br>");
+
+            if (XX === 0 || HX === 0) {
+                alert(HX === 0 && XX === 0 ? "和" : HX === 0 ? "胜" : "负");
+                resetGame();
+            }
+
+            updateStatus();
+        }
+
+        function resetGame() {
+            XX = 10; XD = 0;
+            HX = 10; HD = 0;
+            log = [];
+            updateStatus();
+        }
+
+        updateStatus();
+    </script>
+</body>
+</html>
