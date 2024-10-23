@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        *{margin: 0;padding: 0;}
+    </style>
+</head>
+<body>
+    <canvas id="c"></canvas>
+    <script>
+        var c = document.getElementById('c'),
+            w = c.width = window.innerWidth,
+            h = c.height = window.innerHeight,
+            ctx = c.getContext('2d'),
+            stars = []
+        for (var i = 0; i < 500; i++) {
+            stars.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                v: Math.random() + 0.5
+            })
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0,0,0,0.2)'
+            ctx.fillRect(0, 0, w, h)
+            ctx.fillStyle = '#fff'
+            for (var i = 0; i < stars.length; i++) {
+                var s = stars[i]
+                ctx.fillRect(s.x, s.y, 2, 2)
+                s.y += s.v
+                if (s.y > h) s.y = 0
+            }
+            requestAnimationFrame(draw)
+        }
+        draw()
+    </script>
+</body>
+</html>
