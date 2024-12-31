@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新年倒计时</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: white;
+      background-image: url('https://gd-hbimg.huaban.com/4ea674745aa9b3761501de76ba860df901c66a24c404-4kE2BP_fw1200webp');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .marquee-container {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 2em;
+      font-weight: bold;
+      color: yellow;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    .marquee-text {
+      display: inline-block;
+      animation: marquee 10s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    #countdown {
+      font-size: 2em;
+      font-weight: bold;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 1em;
+      color: rgba(255, 255, 255, 0.8);
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <h1>新年倒计时</h1>
+  <div id="countdown"></div>
+  
+  <!-- 跑马灯 -->
+  <div class="marquee-container">
+    <span class="marquee-text">
+      祝
+      康森
+      何瑞
+      蒋坤
+      刘浩然
+      孙玉林
+      王程
+      王佳
+      杨硕 
+      陈小康
+      新年快乐 身体健康 万事如意～</span>
+  </div>
+
+  <footer>新年的钟声即将敲响啦～</footer>
+
+    <script>
+      // 设置倒计时目标时间（明确为北京时间）
+      const targetDate = new Date('2025-01-01T00:00:00+08:00');
+    
+      function updateCountdown() {
+        // 当前时间（使用用户设备时间）
+        const now = new Date();
+        const localNow = new Date(
+          now.getUTCFullYear(),
+          now.getUTCMonth(),
+          now.getUTCDate(),
+          now.getUTCHours() + 8,
+          now.getUTCMinutes(),
+          now.getUTCSeconds()
+        );
+    
+        // 剩余时间（以毫秒为单位计算）
+        const timeLeft = targetDate - localNow;
+    
+        // 如果已经过了目标时间，显示新年快乐
+        if (timeLeft <= 0) {
+          document.getElementById('countdown').textContent = "新年快乐！🎉";
+          return;
+        }
+    
+        // 计算天、小时、分钟、秒
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+    
+        // 显示剩余时间
+        document.getElementById('countdown').textContent =
+          `${days}天 ${hours}小时 ${minutes}分 ${seconds}秒`;
+      }
+    
+      // 每秒更新倒计时
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+    </script>
+</body>
+</html>
